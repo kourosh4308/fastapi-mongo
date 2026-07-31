@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    image: appimage
+    container_name: pr-fastapi
+    ports:
+      - "8000:8000"
+    networks:
+      - net-pr-fastapi
+    command: >
+      uvicorn main:app
+      --port 8000
+      --reload
+      --host 0.0.0.0
+    volumes:
+      - "D:/tasks/pr:/home/app"
+    
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: pr-mongo-fastapi
+    networks:
+      - net-pr-fastapi
+    volumes:
+      - "D:/tasks/pr/mongo:/home/app"
+
+networks:
+  net-pr-fastapi:
+    
