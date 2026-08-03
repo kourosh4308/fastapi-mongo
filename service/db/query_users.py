@@ -66,7 +66,7 @@ def get_user_by_name(name:str):
     
     user = users.find_one({'profile.name':name})
     if user is None:
-        return {'message':'user not found'}
+        return {"message":f"{name} is not found"}
     else:
         user["_id"] = str(user["_id"])
         return user
