@@ -10,4 +10,4 @@ def delete_player(name:str):
     
     users.delete_one(user)
     
-    return {'message':'deleted user successful'}
+    return {'message':f"deleted {user['profile']['name']} successful"}

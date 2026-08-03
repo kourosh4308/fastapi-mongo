@@ -1,31 +1,23 @@
 from fastapi import APIRouter
-from mongo.db import users
-from datetime import datetime
+from service.db.query_users import get_user_by_name, get_gems, get_all_players
+from service.db.query_users import  get_top_cups, get_purchases_today
 
 
 router = APIRouter(prefix='/player')
 
 @router.get('/all',tags=['all player'])
 def all_players():
-    all_users = []
-    
-    for player in users.find():
-        
-        player['_id'] = str(player['_id'])
-        
-        all_users.append(player)
-        
-    return all_users
+    all_users = get_all_players()
 
-@router.get('/{cups}/top-cups',tags=['top cups'])
-def top_cups():
-    
-    all_users = []
-    for user in users.find({'archivements.cups':{'$gt':10000}}).sort('archivements.cups',-1).limit(10):
-        user['_id'] = str(user['_id'])
-        
-        all_users.append(user)
+    if len(all_users) == 0 :
+        return {'message' : 'no one login'}
+    else :
+        return all_users
 
+@router.get('/{cups}/top-cup-users',tags=['top cups'])
+def top_users():
+     
+    all_users = get_top_cups()
     if len(all_users) == 0:
         return {'message':'nobody have top cups'}
     else:
@@ -33,28 +25,13 @@ def top_cups():
 
 @router.get('/{gems}/show-gems',tags=['show gems'])
 def show_gems(name:str):
-    user = users.find_one({'profile.name':name},{'archivements.gems':1})
     
-    user['_id'] = str(user['_id'])
-    
-    return user
+    return get_gems(name)
 
 @router.get('/purchases',tags=['purchase now'])
 def player_purchase():
-    all_users = []
-    
-    today = datetime.now().date()
-    
-    for user in users.find():
-        print(type(user))
-        for purchase in user['purchases']:
-            if purchase['purchase_at'].date() == today:
-                
-                user['_id'] = str(user['_id'])
-        
-                all_users.append(user)
-                break
-        
+    all_users = get_purchases_today()
+  
     if len(all_users) == 0:
         return {'message':'nobody have purchase'}
     else:
@@ -62,11 +39,6 @@ def player_purchase():
 
 @router.get('/{name}',tags=['search player by name'])
 def player(name:str):
-    user = users.find_one({'profile.name':name})
-
-    if user is None:
-        return {'message':'user not found'}
-
-    user['_id'] = str(user['_id'])
     
-    return user
+    return get_user_by_name(name)
+    

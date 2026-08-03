@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from models.purchases_model import Purchase
 
 
 class Profile(BaseModel):
@@ -7,22 +8,16 @@ class Profile(BaseModel):
     lastname : str
     email : str
     sex : str
-    phone_nubmer : str
+    phone_number : str
     
-class Archivements(BaseModel):
+class Achivements(BaseModel):
     golds : int = 1000
     gems : int = 100
     cups : int = 0
     
-class Purchases(BaseModel):
-    purchase_id : int = 0
-    amount : int
-    item : list[str]
-    purchase_at : datetime
-    
 class User(BaseModel):
     create_at : datetime
     profile : Profile
-    archivements : Archivements
-    purchases : list[Purchases]
+    achivements : Achivements
+    purchases : list[Purchase]
     stage : int = 1
