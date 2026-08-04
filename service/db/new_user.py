@@ -1,6 +1,6 @@
 from models.users_model import User
 from mongo.db import users
-from datetime import datetime, timedelta
+from datetime import datetime
 from random import randint
 
 

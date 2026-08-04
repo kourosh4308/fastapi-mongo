@@ -1,13 +1,10 @@
 from fastapi import APIRouter
-from mongo.db import users
+from service.db.query_users import delete_user
 
 
 router = APIRouter(prefix='/delete')
 
 @router.delete('/{name}/delete',tags=['delete player'])
 def delete_player(name:str):
-    user = users.find_one({'profile.name':name})
     
-    users.delete_one(user)
-    
-    return {'message':f"deleted {user['profile']['name']} successful"}
+    return delete_user(name)
