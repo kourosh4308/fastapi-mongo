@@ -1,8 +1,9 @@
 from mongo.db import users
 from datetime import datetime,timedelta
+from typing import List, Any
 
 
-def get_top_cups():
+def get_top_cups() -> List[dict]:
     """get 10 tops players from db"""
     
     cursor = (
@@ -22,7 +23,7 @@ def get_top_cups():
         for user in cursor
     ]
     
-def get_all_players():
+def get_all_players() -> List[str,Any]:
     """get list of all players"""
     
     cursor = (
@@ -33,7 +34,7 @@ def get_all_players():
         {**user, "_id" : str(user["_id"])}for user in cursor
     ]
     
-def get_gems(name:str = None):
+def get_gems(name:str) -> List[dict]:
     """get gems with filter by name"""
     
     user = users.find_one(
@@ -45,7 +46,7 @@ def get_gems(name:str = None):
     
     return user
 
-def get_purchases_today():
+def get_purchases_today() -> list[str, Any]:
     """get name and lastnames of players who had purchases"""
     
     today = datetime.now()
@@ -61,7 +62,7 @@ def get_purchases_today():
         {**user, "_id": str(user["_id"])}for user in cursor
     ]
 
-def get_user_by_name(name:str):
+def get_user_by_name(name:str) -> dict[str, Any]:
     """search player by name"""
     
     user = users.find_one({'profile.name':name})
@@ -72,7 +73,7 @@ def get_user_by_name(name:str):
         user["_id"] = str(user["_id"])
         return user
 
-def delete_user(name:str):
+def delete_user(name:str) ->dict:
     """delete player by name"""
     
     deleted_user = users.delete_one({'profile.name':name})
