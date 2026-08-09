@@ -42,7 +42,7 @@ def player_purchase(request:Request):
     else:
         return all_users
 
-@router.get('/{name}',tags=['search player by name'])
+@router.get('search-name/{name}',tags=['search player by name'])
 @limiter.limit("5/minute")
 def player(name:str,request:Request):
     

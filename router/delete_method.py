@@ -5,7 +5,7 @@ from service.limiter.limiter import limiter
 
 router = APIRouter(prefix='/delete')
 
-@router.delete('/{name}/delete',tags=['delete player'])
+@router.delete('/delete/{name}',tags=['delete player'])
 @limiter.limit("5/minute")
 def delete_player(name:str,request:Request):
     

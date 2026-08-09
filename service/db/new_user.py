@@ -4,7 +4,7 @@ from datetime import datetime
 from random import randint
 
 
-def post_user_data(player:User):
+def post_user_data(player:User) -> dict[str, str]:
     """create new player in database"""
     
     new_user = player.model_dump()

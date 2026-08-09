@@ -23,7 +23,7 @@ def get_top_cups() -> List[dict]:
         for user in cursor
     ]
     
-def get_all_players() -> List[str,Any]:
+def get_all_players() -> List[dict]:
     """get list of all players"""
     
     cursor = (
@@ -46,7 +46,7 @@ def get_gems(name:str) -> List[dict]:
     
     return user
 
-def get_purchases_today() -> list[str, Any]:
+def get_purchases_today() -> list[dict]:
     """get name and lastnames of players who had purchases"""
     
     today = datetime.now()
@@ -73,7 +73,7 @@ def get_user_by_name(name:str) -> dict[str, Any]:
         user["_id"] = str(user["_id"])
         return user
 
-def delete_user(name:str) ->dict:
+def delete_user(name:str) -> dict[str, str]:
     """delete player by name"""
     
     deleted_user = users.delete_one({'profile.name':name})
