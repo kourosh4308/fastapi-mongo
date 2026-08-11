@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
-from service.db.query_users import delete_user
-from service.limiter.limiter import limiter
+from db.db_deletes import delete_user
+from limiter.limiter import limiter
 
 
 router = APIRouter(prefix='/delete')

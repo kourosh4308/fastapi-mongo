@@ -1,9 +1,8 @@
-from pydantic import BaseModel
-from datetime import datetime
+from pydantic import BaseModel, Field
+from typing import List
 
 
 class Purchase(BaseModel):
-    purchase_id : int = 0
+    purchase_token :str
     amount : int
-    items : list[str]
-    purchase_at : datetime
+    items : List[str] = Field(default_factory=list)
