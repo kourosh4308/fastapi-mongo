@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Request
 from db.query_users import get_user_by_name, get_achivements, get_all_players
 from db.query_users import  get_top_cups, get_purchases_today
-from limiter.limiter import limiter
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
+
+limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter(prefix='/player')
 
@@ -16,7 +19,7 @@ def all_players(request:Request):
     else :
         return all_users
 
-@router.get('/{cups}/top-cup-users',tags=['top cups'])
+@router.get('/top-cup-users',tags=['top cups'])
 @limiter.limit("5/minute")
 def top_users(request:Request):
      
@@ -27,7 +30,7 @@ def top_users(request:Request):
     else:
         return all_users
 
-@router.get('/{gems}/show-achivements',tags=['show achivements'])
+@router.get('/show-achivements',tags=['show achivements'])
 @limiter.limit("5/minute")
 def show_achivements(name:str,request:Request):
     
@@ -43,7 +46,7 @@ def player_purchase(request:Request):
     else:
         return all_users
 
-@router.get('search-name/{name}',tags=['search player by name'])
+@router.get('/search-name/{name}',tags=['search player by name'])
 @limiter.limit("5/minute")
 def player(name:str,request:Request):
     
