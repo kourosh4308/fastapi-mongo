@@ -19,13 +19,17 @@ class Achivements(BaseModel):
 
 class User(BaseModel):
     profile : Profile
-    achivements : Achivements
-    stage : int = 1
     
 class Player(BaseModel):
-    id : UUID 
+    id : str 
     create_at : Optional[datetime] = None
     profile : Optional[Profile] = None
     achivements : Optional[Achivements] = None
     purchases : Optional[List[Purchase]] = Field(default_factory=list)
+    stage : Optional[int] = 1
+    
+class UpdatePlayer(BaseModel):
+    golds : Optional[int] = None
+    gems : Optional[int] = None
+    cups : Optional[int] = None
     stage : Optional[int] = None
