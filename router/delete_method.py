@@ -1,15 +1,12 @@
 from fastapi import APIRouter, Request
-from db.db_deletes import delete_user
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+from service.db_deletes import delete_user_service
+from utils.limiter import limiter
 
-
-limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter(prefix='/delete')
 
 @router.delete('/delete/{name}',tags=['delete player'])
 @limiter.limit("5/minute")
-def delete_player(name:str,request:Request):
+def delete_player(name:str,request:Request) -> bool:
     
-    return delete_user(name)
+    return delete_user_service(name)

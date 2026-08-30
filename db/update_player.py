@@ -1,10 +1,11 @@
 from mongo.db import users
 from models.users_model import UpdatePlayer
 from fastapi import status, HTTPException
-from uuid import UUID
 
 
-def put_update_player(id:str,model:UpdatePlayer) -> dict:
+def put_update_player(id:str,model:UpdatePlayer) -> int:
+    """update player achivements"""
+    
     player =  users.find_one({'id':id})
     
     if player is None:
@@ -22,6 +23,8 @@ def put_update_player(id:str,model:UpdatePlayer) -> dict:
         else:
             set_update[key] = value
         
-    users.update_one({'id':id},{'$set':set_update})
+    result = users.update_one({'id':id},{'$set':set_update})
     
-    return {'message':'updated is ok'}
+    if result.matched_count > 0:
+        return result.modified_count
+    return -1

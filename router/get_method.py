@@ -1,54 +1,37 @@
 from fastapi import APIRouter, Request
-from db.query_users import get_user_by_name, get_achivements, get_all_players
-from db.query_users import  get_top_cups, get_purchases_today
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+from service.query_users import get_user_by_name_service, get_achivements_service, get_top_cups_service
+from service.query_users import get_all_players_service, get_purchases_today_service
+from utils.limiter import limiter
 
-
-limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter(prefix='/player')
 
 @router.get('/all',tags=['all player'])
 @limiter.limit("5/minute")
 def all_players(request:Request):
-    all_users = get_all_players()
     
-    if len(all_users) == 0 :
-        return {'message' : 'no one login'}
-    else :
-        return all_users
+    return get_all_players_service()
 
 @router.get('/top-cup-users',tags=['top cups'])
 @limiter.limit("5/minute")
 def top_users(request:Request):
      
-    all_users = get_top_cups()
+    return get_top_cups_service()
     
-    if len(all_users) == 0:
-        return {'message':'nobody have top cups'}
-    else:
-        return all_users
-
 @router.get('/show-achivements',tags=['show achivements'])
 @limiter.limit("5/minute")
-def show_achivements(name:str,request:Request):
+def show_achivements(player_id:str,request:Request):
     
-    return get_achivements(name)
+    return get_achivements_service(player_id)
 
 @router.get('/purchases',tags=['purchase now'])
 @limiter.limit("5/minute")
 def player_purchase(request:Request):
-    all_users = get_purchases_today()
-  
-    if len(all_users) == 0:
-        return {'message':'nobody have purchase'}
-    else:
-        return all_users
+    
+    return get_purchases_today_service()
 
 @router.get('/search-name/{name}',tags=['search player by name'])
 @limiter.limit("5/minute")
 def player(name:str,request:Request):
     
-    return get_user_by_name(name)
-    
+    return get_user_by_name_service(name)
