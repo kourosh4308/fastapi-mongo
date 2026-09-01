@@ -3,28 +3,31 @@ from models.users_model import UpdatePlayer
 from fastapi import status, HTTPException
 
 
-def put_update_player(id:str,model:UpdatePlayer) -> int:
+def put_update_player(id:str,data:dict[str, int]) -> tuple[int, int]:
     """update player achivements"""
     
-    player =  users.find_one({'id':id})
+    # player =  users.find_one({'id':id})
     
-    if player is None:
-        raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,detail='player not found')
+    # if player is None:
+    #     return None
+        # raise HTTPException (status_code=status.HTTP_404_NOT_FOUND,detail='player not found')
     
-    data : dict[str, int] = model.model_dump(exclude_unset=True)
+    # data : dict[str, int] = model.model_dump(exclude_unset=True)
     
-    achive_fields = {'gems','golds','cups'}
+    # achive_fields = {'gems','golds','cups'}
     
-    set_update = {}
+    # set_update = {}
     
-    for key, value in data.items():
-        if key in achive_fields:
-            set_update[f"achivements.{key}"] = value
-        else:
-            set_update[key] = value
+    # for key, value in data.items():
+    #     if key in achive_fields:
+    #         set_update[f"achivements.{key}"] = value
+    #     else:
+    #         set_update[key] = value
         
-    result = users.update_one({'id':id},{'$set':set_update})
+    result = users.update_one({'id':id},{'$set':data})
     
-    if result.matched_count > 0:
-        return result.modified_count
-    return -1
+    return result.modified_count, result.matched_count
+    
+    # if result.matched_count > 0:
+    #     return result.modified_count
+    # return -1
