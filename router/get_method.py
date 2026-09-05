@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
-from service.query_users import get_user_by_name_service, get_achivements_service, get_top_cups_service
-from service.query_users import get_all_players_service, get_purchases_today_service
+
+from service.player import *
 from utils.limiter import limiter
 
 

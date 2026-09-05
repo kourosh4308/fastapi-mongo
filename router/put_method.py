@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Request
 
 from utils.limiter import limiter
-from service.update_player import put_update_player_service
-from models.users_model import UpdatePlayer
+from service.player import put_update_player_service
+from models.users import UpdatePlayer
 
 
 router = APIRouter()

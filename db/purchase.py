@@ -1,5 +1,5 @@
 from mongo.db import users
-from models.purchases_model import Purchase
+from models.purchases import Purchase
 
 
 def create_purchase(player_id:str,purchase:Purchase) -> None | bool:

@@ -1,8 +1,24 @@
-from db.query_users import get_user_by_name, get_achivements,get_top_cups, get_all_players, get_purchases_today
-from models.users_model import Player, Achivements
+from models.users import Player, User, Achivements, UpdatePlayer
+from db.player import *
+
 from fastapi import HTTPException, status
 from typing import List, Any, Tuple, Optional
+from uuid import uuid4
+from datetime import datetime
 
+
+def post_user_data_service(model:User) -> Player:
+    new_player = Player(
+        id=str(uuid4()),
+        create_at=datetime.now(),
+        profile=model.profile,
+        achivements=Achivements(),
+        stage=1
+    )
+    
+    post_user_data(new_player)
+    
+    return new_player
 
 def get_user_by_name_service(name:str) -> Player:
     player : Player = get_user_by_name(name)
@@ -50,3 +66,35 @@ def get_all_players_service() -> List[Player]:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='no one player')
     
     return players
+
+def put_update_player_service(player_id:str,model:UpdatePlayer) -> int:
+    
+    data : dict[str, int] = model.model_dump(exclude_unset=True)
+    
+    achive_fields = {'gems','golds','cups'}
+    
+    set_update = {}
+
+    for key, value in data.items():
+        if key in achive_fields:
+            set_update[f"achivements.{key}"] = value
+        else:
+            set_update[key] = value
+
+    matched_count, modified_count = put_update_player(player_id,set_update)
+    
+    if matched_count == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='user is not found')
+    
+    return modified_count
+
+
+def delete_user_service(name:str) -> bool:
+    
+    deleted_user = delete_user(name)
+    
+    if deleted_user == False:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='user is not found')
+    
+    return True
+

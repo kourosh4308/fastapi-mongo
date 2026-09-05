@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
-from models.purchases_model import Purchase
-from uuid import UUID, uuid4
 from typing import List, Optional
+
+from models.purchases import Purchase
 
 
 class Profile(BaseModel):

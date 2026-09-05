@@ -1,9 +1,9 @@
 from fastapi import status, HTTPException
 from datetime import datetime
 
-from models.purchases_model import Purchase
-from models.users_model import Achivements
-from db.new_purchase import create_purchase
+from models.purchases import Purchase
+from models.users import Achivements
+from db.purchase import create_purchase
 
 
 def create_purchase_service(player_id:str,model:Purchase) -> Purchase:
