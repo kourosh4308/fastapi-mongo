@@ -1,9 +1,10 @@
 from fastapi import status, HTTPException
 from datetime import datetime
+from typing import List, Any
 
 from models.purchases import Purchase
 from models.users import Achivements
-from db.purchase import create_purchase
+from db.purchase import create_purchase,get_purchases_today
 
 
 def create_purchase_service(player_id:str,model:Purchase) -> Purchase:
@@ -25,3 +26,12 @@ def create_purchase_service(player_id:str,model:Purchase) -> Purchase:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='purchase token is exist')
         
     return new_purchase
+
+def get_purchases_today_service() -> List[dict[str, Any]]:
+    players : List[dict[str, Any]] = get_purchases_today()
+    
+    if players is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='no one player have purchase')
+    
+    return players
+

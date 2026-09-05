@@ -50,14 +50,6 @@ def get_top_cups_service() -> List[dict[str, Any]]:
     
     return players
 
-def get_purchases_today_service() -> List[dict[str, Any]]:
-    players : List[dict[str, Any]] = get_purchases_today()
-    
-    if players is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='no one player have purchase')
-    
-    return players
-
 def get_all_players_service() -> List[Player]:
     
     players : List[Player] = get_all_players()

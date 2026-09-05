@@ -77,32 +77,6 @@ def get_achivements(player_id:str) -> Tuple[Optional[Achivements], Optional[int]
     
     return (achivements, stage)
 
-def get_purchases_today() -> List[dict[str, Any]] | None:
-    """get name and lastnames of players who had purchases"""
-    
-    today : datetime = datetime.now()
-    
-    start : datetime = today.replace(hour=0,minute=0,second=0,microsecond=0)
-    end : datetime = start + timedelta(days=1)
-    
-    cursor : Cursor = (
-        users.find({'purchases.purchase_at':{'$gt':start,'$lt':end}},
-                   {
-                       '_id':0,
-                       'id':1,
-                       'profile.name':1,
-                       'profile.lastname':1,
-                       'purchases':1
-                    })
-    )
-    
-    result : List[dict[str, Any]] = list((purchse)for purchse in cursor)
-    
-    if len(result) == 0:
-        return None
-    
-    return result
-
 def get_user_by_name(name:str) -> Player | None:
     """search player by name"""
     
