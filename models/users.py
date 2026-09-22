@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List, Optional
 
 from models.purchases import Purchase
+from models.friend import FriendShip
 
 
 class Profile(BaseModel):
@@ -26,6 +27,7 @@ class Player(BaseModel):
     profile : Optional[Profile] = None
     achivements : Optional[Achivements] = None
     purchases : Optional[List[Purchase]] = Field(default_factory=list)
+    friendship : Optional[List[FriendShip]] = None
     stage : Optional[int] = 1
     
 class UpdatePlayer(BaseModel):
